@@ -1,27 +1,6 @@
 import React from 'react';
 import './styles.css';
-const Index = ({todo, setTodo, addHandler}) => {
-  // const [todo, setTodo] = useState({
-  //   id: '',
-  //   name: '',
-  //   desc: ''
-  // });
-
-  // console.log(props);
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!todo.name || !todo.desc) {
-      alert('Please fill in all fields');
-      return;
-    } else {
-      addHandler(todo);
-    }
-    setTodo({
-      id: '',
-      name: '',
-      desc: ''
-    });
-  };
+const Index = ({todo, setTodo, handleSubmit}) => {
 
   return (
     <form className='form-container' onSubmit={e => handleSubmit(e)}>

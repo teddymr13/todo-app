@@ -23,11 +23,10 @@ const Index = () => {
   };
 
   const updatedTodoHandler = id =>{
-    const updateDataTodo = todos.find(todo => todo.id === id);
+    const updateDataTodo = todos.find((todo) => {
+      return todo.id === id;
+    });
     setTodo({id, name:updateDataTodo.name, desc:updateDataTodo.desc})
-    const dataUpdate = todos.map(t => t.id === id ? {...t, name: todo.name, desc: todo.desc} : t)
-    setTodos(dataUpdate)
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataUpdate));
   }
 
   const deleteTodoHandler = id => {
@@ -35,6 +34,34 @@ const Index = () => {
     setTodos(updatedTodos);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedTodos));
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (!todo.name || !todo.desc){
+        alert('Name and Description are required')
+        return
+    } else if (!todo.id){
+      addTodoHandler(todo)
+    } else {
+      const dataUpdate = todos.map((t) =>
+      t.id === todo.id
+          ? { ...t, name: todo.name, desc: todo.desc }
+          : t
+      );
+      setTodos(dataUpdate);
+      localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(dataUpdate)
+      );
+    }
+    setTodo({
+        id:'',
+        name:'',
+        desc:''
+    })
+  }
+  
   useEffect(() => {
     const listTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     listTodos && setTodos(listTodos);
@@ -43,7 +70,7 @@ const Index = () => {
   return (
     <div>
       <h1>Hello, Create Your Activity</h1>
-      <TodoAdd addHandler={addTodoHandler}setTodo={setTodo} todo={todo} />
+      <TodoAdd addHandler={addTodoHandler}setTodo={setTodo} todo={todo} todos={todos} handleSubmit={handleSubmit} />
       <TodoList todos={todos} deleteTodos={deleteTodoHandler} editTodos={updatedTodoHandler} />
     </div>
   );
